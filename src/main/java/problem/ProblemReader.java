@@ -6,14 +6,8 @@ import java.util.Scanner;
 
 public class ProblemReader {
 
-    private static final InputStream FILE = ProblemReader.class.getResourceAsStream("/ttp_student/easy_0.ttp");
+    private static final InputStream FILE = ProblemReader.class.getResourceAsStream("/ttp_student/trivial_0.ttp");
     private static final Scanner sc = new Scanner(FILE);
-
-    public static void all() {
-        while (sc.hasNext()) {
-            System.out.println(sc.next());
-        }
-    }
 
     public static ProblemDTO read() {
         ProblemDTO problemDTO = new ProblemDTO();
@@ -37,7 +31,7 @@ public class ProblemReader {
             itemDTO.setIndex(nextInt());
             itemDTO.setProfit(nextInt());
             itemDTO.setWeight(nextInt());
-            itemDTO.setAssigned(nextInt());
+            itemDTO.setAssignedNode(nextInt());
             problemDTO.getItems().add(itemDTO);
         }
         return problemDTO;

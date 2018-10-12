@@ -14,11 +14,15 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 public class TTPGenome {
 
     private final List<Integer> pickingPlan; //list of cities, 0 means item is not picked, item 1 is at position 0
     private final List<Integer> tour;
+
+    public TTPGenome(List<Integer> pickingPlan, List<Integer> tour) {
+        this.pickingPlan = pickingPlan;
+        this.tour = tour;
+    }
 
     public double evaluate(ProblemDTO data) {
         return profitSum(data.items) - data.rentingRatio * totalTime(data.nodes, data.items, data.maxSpeed, data.minSpeed,

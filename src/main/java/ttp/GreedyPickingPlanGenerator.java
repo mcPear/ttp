@@ -7,9 +7,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GreedyPickingPlanGenerator {
+public class GreedyPickingPlanGenerator { //todo force instance
 
     private static List<Integer> pickingPlanStatic;
+    private static List<ItemDTO> pickedItemsStatic;
 
     public static List<Integer> getPickingPlan(List<ItemDTO> items, int capacity) {
         if (pickingPlanStatic == null) {
@@ -37,6 +38,19 @@ public class GreedyPickingPlanGenerator {
             }
         }
         return totalWeight + itemToAdd.getWeight() < capacity;
+    }
+
+    public static List<ItemDTO> pickedItems(List<ItemDTO> items, List<Integer> pickingPlan) {
+        if (pickedItemsStatic == null) {
+            List<ItemDTO> pickedItems = new ArrayList<>();
+            for (int i = 0; i < pickingPlan.size(); i++) {
+                if (pickingPlan.get(i) != 0) {
+                    pickedItems.add(items.get(i));
+                }
+            }
+            pickedItemsStatic = pickedItems;
+        }
+        return pickedItemsStatic;
     }
 
 }

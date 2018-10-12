@@ -7,9 +7,10 @@ import java.util.Scanner;
 public class ProblemReader {
 
     private static final InputStream FILE = ProblemReader.class.getResourceAsStream("/ttp_student/trivial_0.ttp");
-    private static final Scanner sc = new Scanner(FILE);
+    private static Scanner sc = new Scanner(FILE);
 
-    public static ProblemDTO read() {
+    public static ProblemDTO read(InputStream stream) {
+        sc = new Scanner(stream);
         ProblemDTO problemDTO = new ProblemDTO();
         problemDTO.setDimension(nextInt());
         problemDTO.setItemsCount(nextInt());
@@ -23,7 +24,7 @@ public class ProblemReader {
             nodeDTO.setIndex(nextInt());
             nodeDTO.setX((int) nextDouble());
             nodeDTO.setY((int) nextDouble());
-            problemDTO.getNodes().add(nodeDTO);
+            problemDTO.nodes.add(nodeDTO);
         }
         problemDTO.setItems(new ArrayList<>());
         while (sc.hasNext()) {
@@ -32,9 +33,13 @@ public class ProblemReader {
             itemDTO.setProfit(nextInt());
             itemDTO.setWeight(nextInt());
             itemDTO.setAssignedNode(nextInt());
-            problemDTO.getItems().add(itemDTO);
+            problemDTO.items.add(itemDTO);
         }
         return problemDTO;
+    }
+
+    public static ProblemDTO read() {
+        return read(FILE);
     }
 
     private static int nextInt() {

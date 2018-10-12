@@ -1,19 +1,17 @@
 package problem;
 
-import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
 
-@Getter
 @Setter
 public class ProblemDTO {
-    private int dimension;
-    private int itemsCount;
-    private int capacity;
-    private double minSpeed;
-    private double maxSpeed;
-    private double rentingRatio;
-    private List<NodeDTO> nodes;
-    private List<ItemDTO> items;
+    public int dimension;
+    public int itemsCount;
+    public int capacity;
+    public double minSpeed;
+    public double maxSpeed;
+    public double rentingRatio;
+    public List<NodeDTO> nodes;
+    public List<ItemDTO> items;
 }

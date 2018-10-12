@@ -17,7 +17,7 @@ public class ProblemReader {
         problemDTO.setMinSpeed(nextDouble());
         problemDTO.setMaxSpeed(nextDouble());
         problemDTO.setRentingRatio(nextDouble());
-        problemDTO.setNodes(new ArrayList<NodeDTO>());
+        problemDTO.setNodes(new ArrayList<>());
         while (!sc.hasNext("ITEMS")) {
             NodeDTO nodeDTO = new NodeDTO();
             nodeDTO.setIndex(nextInt());
@@ -25,7 +25,7 @@ public class ProblemReader {
             nodeDTO.setY((int) nextDouble());
             problemDTO.getNodes().add(nodeDTO);
         }
-        problemDTO.setItems(new ArrayList<ItemDTO>());
+        problemDTO.setItems(new ArrayList<>());
         while (sc.hasNext()) {
             ItemDTO itemDTO = new ItemDTO();
             itemDTO.setIndex(nextInt());
@@ -39,12 +39,9 @@ public class ProblemReader {
 
     private static int nextInt() {
         while (!sc.hasNextInt()) {
-            String next = sc.next();
-            System.out.println(next);
+            sc.next();
         }
-        int outVal = sc.nextInt();
-        System.out.println("OUT: " + outVal);
-        return outVal;
+        return sc.nextInt();
     }
 
     private static double nextDouble() {

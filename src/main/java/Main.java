@@ -1,6 +1,8 @@
 import ea.*;
+import problem.DistanceTable;
 import problem.ProblemDTO;
 import problem.ProblemReader;
+import ttp.GreedyPickingPlanGenerator;
 import ttp.TTPGenome;
 
 import java.util.ArrayList;
@@ -11,19 +13,28 @@ public class Main {
 
     private static final int populationSize = 1000;
     private static final int tournamentSize = 5;
-    private static final double crossingChancePercent = 80;
-    private static final double mutationChancePercent = 5;
-    private static final double generationsCount = 100;
+    private static final double crossingChancePercent = 40;
+    private static final double mutationChancePercent = 6;
+    private static final double generationsCount = 200;
     private static final ProblemDTO problemDTO = ProblemReader.read();
 
     public static void main(String... args) {
+        DistanceTable.initDistances(problemDTO.nodes);
+        GreedyPickingPlanGenerator.initPickedItemsWeightInNode(problemDTO.nodes, problemDTO.items, problemDTO.capacity);
         OverallResult overallResult = new OverallResult();
+        GenerationResult bestResult = null;
         List<TTPGenome> currentPopulation = initialPopulation();
         for (int i = 0; i < generationsCount; i++) {
-            overallResult.add(generationResult(currentPopulation, problemDTO));
+            GenerationResult generationResult = generationResult(currentPopulation, problemDTO);
+            overallResult.add(generationResult);
+            if (bestResult == null || bestResult.lowerThan(generationResult)) {
+                bestResult = generationResult;
+            }
             currentPopulation = nextPopulation(currentPopulation);
+            System.out.println("Gen no. " + (i + 1));
         }
         System.out.println(overallResult.toCsvString());
+        System.out.println("The best: " + bestResult.best);
     }
 
     private static List<TTPGenome> nextPopulation(List<TTPGenome> basePopulation) {

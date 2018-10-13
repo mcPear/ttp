@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class ProblemReader {
 
-    private static final InputStream FILE = ProblemReader.class.getResourceAsStream("/ttp_student/trivial_0.ttp");
+    private static final InputStream FILE = ProblemReader.class.getResourceAsStream("/ttp_student/medium_0.ttp");
     private static Scanner sc = new Scanner(FILE);
 
     public static ProblemDTO read(InputStream stream) {

@@ -8,15 +8,15 @@ import java.util.List;
 @Getter
 public class GenerationResult {
 
-    public final double best;
-    public final double middle;
-    public final double worst;
+    public final int best;
+    public final int middle;
+    public final int worst;
 
     public GenerationResult(List<Double> evaluationList) {
         Collections.sort(evaluationList);
-        best = evaluationList.get(evaluationList.size() - 1);
-        middle = evaluationList.get(evaluationList.size() / 2);
-        worst = evaluationList.get(0);
+        best = evaluationList.get(evaluationList.size() - 1).intValue();
+        middle = evaluationList.get(evaluationList.size() / 2).intValue();
+        worst = evaluationList.get(0).intValue();
     }
 
     public boolean lowerThan(GenerationResult other) {

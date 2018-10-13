@@ -1,16 +1,16 @@
 package ttp;
 
 import problem.ItemDTO;
+import problem.NodeDTO;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GreedyPickingPlanGenerator { //todo force instance
 
     private static List<Integer> pickingPlanStatic;
     private static List<ItemDTO> pickedItemsStatic;
+    public static Map<Integer, Integer> pickedItemsWeightInNode;
 
     public static List<Integer> getPickingPlan(List<ItemDTO> items, int capacity) {
         if (pickingPlanStatic == null) {
@@ -51,6 +51,19 @@ public class GreedyPickingPlanGenerator { //todo force instance
             pickedItemsStatic = pickedItems;
         }
         return pickedItemsStatic;
+    }
+
+    public static void initPickedItemsWeightInNode(List<NodeDTO> nodes, List<ItemDTO> items, int capacity) {
+        pickedItemsWeightInNode = new HashMap<>();
+        nodes.forEach(node ->
+                pickedItemsWeightInNode.put(node.getIndex(), pickedItemsWeightInNode(node.getIndex(), items, capacity))
+        );
+    }
+
+    private static int pickedItemsWeightInNode(int node, List<ItemDTO> items, int capacity) {
+        List<ItemDTO> itemsPickedInNode = pickedItems(items, getPickingPlan(items, capacity))
+                .stream().filter(item -> item.getAssignedNode() == node).collect(Collectors.toList());
+        return itemsPickedInNode.stream().mapToInt(ItemDTO::getWeight).sum();
     }
 
 }

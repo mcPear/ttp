@@ -16,9 +16,10 @@ public class SelectionTest {
         List<TTPGenome> initialPopulation = Main.initialPopulation();
         List<TTPGenome> selectedPopulation = Selection.select(initialPopulation, 5, problemDTO);
         List<TTPGenome> crossedPopulation = Crossover.cross(selectedPopulation, 50);
+        List<TTPGenome> mutatedPopulation = Mutation.mutate(crossedPopulation, 1);
 
-        Assert.assertEquals(initialPopulation.size(), crossedPopulation.size());
-        Assert.assertNotEquals(initialPopulation, crossedPopulation);
+        Assert.assertEquals(initialPopulation.size(), mutatedPopulation.size());
+        Assert.assertNotEquals(initialPopulation, mutatedPopulation);
     }
 
 }

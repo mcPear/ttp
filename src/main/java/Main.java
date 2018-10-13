@@ -17,6 +17,7 @@ public class Main {
         List<TTPGenome> initialPopulation = initialPopulation();
         List<TTPGenome> selectedPopulation = Selection.select(initialPopulation, tournamentSize, problemDTO);
         List<TTPGenome> crossedPopulation = Crossover.cross(selectedPopulation, crossingChancePercent);
+        List<TTPGenome> mutatedPopulation = Mutation.mutate(crossedPopulation, mutationChancePercent);
         System.out.println(args);
     }
 

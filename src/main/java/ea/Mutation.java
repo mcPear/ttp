@@ -1,3 +1,5 @@
+package ea;
+
 import ttp.TTPGenome;
 
 import java.util.Collections;

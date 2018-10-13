@@ -1,3 +1,6 @@
+import ea.Crossover;
+import ea.Mutation;
+import ea.Selection;
 import problem.ProblemDTO;
 import problem.ProblemReader;
 import ttp.TTPGenome;

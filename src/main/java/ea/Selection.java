@@ -1,3 +1,5 @@
+package ea;
+
 import problem.ProblemDTO;
 import ttp.TTPGenome;
 

@@ -1,3 +1,6 @@
+import ea.Crossover;
+import ea.Mutation;
+import ea.Selection;
 import org.junit.Assert;
 import org.junit.Test;
 import problem.ProblemDTO;

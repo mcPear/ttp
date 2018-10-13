@@ -11,9 +11,9 @@ import java.util.stream.Collectors;
 
 public class Main {
 
-    private static final int populationSize = 1000;
-    private static final int tournamentSize = 5;
-    private static final double crossingChancePercent = 40;
+    private static final int populationSize = 3000;
+    private static final int tournamentSize = 7;
+    private static final double crossingChancePercent = 55;
     private static final double mutationChancePercent = 6;
     private static final double generationsCount = 200;
     private static final ProblemDTO problemDTO = ProblemReader.read();

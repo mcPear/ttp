@@ -23,7 +23,7 @@ public class TTPGenome {
         this.tour = tour;
     }
 
-    public double evaluate(ProblemDTO data) {
+    public Double evaluate(ProblemDTO data) {
         if (evaluation == null) {
             evaluation = profitSum(data.items) - data.rentingRatio * totalTime(data.maxSpeed, data.minSpeed, data.capacity);
         }
@@ -80,4 +80,12 @@ public class TTPGenome {
         return new TTPGenome(pickingPlan, tour);
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[");
+        tour.forEach(node -> sb.append(node + ","));
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append(']');
+        return sb.toString();
+    }
 }

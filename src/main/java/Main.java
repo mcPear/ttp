@@ -7,7 +7,6 @@ import ttp.TTPGenome;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Main {
 
@@ -19,8 +18,7 @@ public class Main {
     private static final ProblemDTO problemDTO = ProblemReader.read();
 
     public static void main(String... args) {
-        DistanceTable.initDistances(problemDTO.nodes);
-        GreedyPickingPlanGenerator.initPickedItemsWeightInNode(problemDTO.nodes, problemDTO.items, problemDTO.capacity);
+        initGreedyPickingPlanStatics();
         OverallResult overallResult = new OverallResult();
         GenerationResult bestResult = null;
         List<TTPGenome> currentPopulation = initialPopulation();
@@ -34,7 +32,13 @@ public class Main {
             System.out.println("Gen no. " + (i + 1));
         }
         System.out.println(overallResult.toCsvString());
-        System.out.println("The best: " + bestResult.best);
+        System.out.println("The best profit: " + bestResult.best);
+        System.out.println("The best tour: " + bestResult.bestGenome);
+    }
+
+    private static void initGreedyPickingPlanStatics() {
+        DistanceTable.initDistances(problemDTO.nodes);
+        GreedyPickingPlanGenerator.initPickedItemsWeightInNode(problemDTO.nodes, problemDTO.items, problemDTO.capacity);
     }
 
     private static List<TTPGenome> nextPopulation(List<TTPGenome> basePopulation) {
@@ -54,7 +58,7 @@ public class Main {
     }
 
     private static GenerationResult generationResult(List<TTPGenome> generation, ProblemDTO problemDTO) {
-        return new GenerationResult(generation.stream().map(genome -> genome.evaluate(problemDTO)).collect(Collectors.toList()));
+        return new GenerationResult(generation, problemDTO);
     }
 
 }

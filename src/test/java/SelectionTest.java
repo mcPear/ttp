@@ -14,10 +14,11 @@ public class SelectionTest {
         InputStream stream = SelectionTest.class.getResourceAsStream("/ttp_student/trivial_1.ttp");
         ProblemDTO problemDTO = ProblemReader.read(stream);
         List<TTPGenome> initialPopulation = Main.initialPopulation();
-        List<TTPGenome> selectedPopulation = Main.select(initialPopulation, 5, problemDTO);
+        List<TTPGenome> selectedPopulation = Selection.select(initialPopulation, 5, problemDTO);
+        List<TTPGenome> crossedPopulation = Crossover.cross(selectedPopulation, 50);
 
-        Assert.assertEquals(initialPopulation.size(), selectedPopulation.size());
-        Assert.assertNotEquals(initialPopulation, selectedPopulation);
+        Assert.assertEquals(initialPopulation.size(), crossedPopulation.size());
+        Assert.assertNotEquals(initialPopulation, crossedPopulation);
     }
 
 }

@@ -1,28 +1,29 @@
-import ea.Crossover;
-import ea.Mutation;
-import ea.Selection;
+import ea.*;
 import problem.ProblemDTO;
 import problem.ProblemReader;
 import ttp.TTPGenome;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Main {
 
-    private static final int populationSize = 100;
-    private static final int tournamentSize = 100;
-    private static final double crossingChancePercent = 50;
-    private static final double mutationChancePercent = 1;
+    private static final int populationSize = 1000;
+    private static final int tournamentSize = 5;
+    private static final double crossingChancePercent = 80;
+    private static final double mutationChancePercent = 5;
     private static final double generationsCount = 100;
     private static final ProblemDTO problemDTO = ProblemReader.read();
 
     public static void main(String... args) {
+        OverallResult overallResult = new OverallResult();
         List<TTPGenome> currentPopulation = initialPopulation();
         for (int i = 0; i < generationsCount; i++) {
+            overallResult.add(generationResult(currentPopulation, problemDTO));
             currentPopulation = nextPopulation(currentPopulation);
         }
-        System.out.println(args);
+        System.out.println(overallResult.toCsvString());
     }
 
     private static List<TTPGenome> nextPopulation(List<TTPGenome> basePopulation) {
@@ -39,6 +40,10 @@ public class Main {
                             problemDTO.dimension, problemDTO.items, problemDTO.capacity));
         }
         return initialPopulation;
+    }
+
+    private static GenerationResult generationResult(List<TTPGenome> generation, ProblemDTO problemDTO) {
+        return new GenerationResult(generation.stream().map(genome -> genome.evaluate(problemDTO)).collect(Collectors.toList()));
     }
 
 }

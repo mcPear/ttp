@@ -11,6 +11,7 @@ public class Mutation {
         for (TTPGenome genome :
                 basePopulation) {
             mutate(genome, mutationChancePercent);
+            genome.resetEvaluation(); //fixme easy to forget
         }
         return basePopulation;
     }

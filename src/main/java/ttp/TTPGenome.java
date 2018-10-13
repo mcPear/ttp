@@ -1,7 +1,6 @@
 package ttp;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import problem.ItemDTO;
 import problem.NodeDTO;
@@ -18,6 +17,7 @@ public class TTPGenome {
 
     private final List<Integer> pickingPlan; //list of cities, 0 means item is not picked, item 1 is at position 0
     private final List<Integer> tour;
+    private Double evaluation;
 
     public TTPGenome(List<Integer> pickingPlan, List<Integer> tour) {
         this.pickingPlan = pickingPlan;
@@ -25,8 +25,15 @@ public class TTPGenome {
     }
 
     public double evaluate(ProblemDTO data) {
-        return profitSum(data.items) - data.rentingRatio * totalTime(data.nodes, data.items, data.maxSpeed, data.minSpeed,
-                data.capacity);
+        if (evaluation == null) {
+            evaluation = profitSum(data.items) - data.rentingRatio * totalTime(data.nodes, data.items, data.maxSpeed,
+                    data.minSpeed, data.capacity);
+        }
+        return evaluation;
+    }
+
+    public void resetEvaluation() {
+        evaluation = null;
     }
 
     private int profitSum(List<ItemDTO> items) {

@@ -1,4 +1,4 @@
-package ea;
+package genetic;
 
 public class Rand {
 

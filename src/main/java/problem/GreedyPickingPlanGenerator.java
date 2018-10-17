@@ -1,4 +1,4 @@
-package ttp;
+package problem;
 
 import problem.ItemDTO;
 import problem.NodeDTO;

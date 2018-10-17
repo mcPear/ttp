@@ -1,6 +1,7 @@
-package ea;
+package genetic.operation;
 
-import ttp.TTPGenome;
+import genetic.Rand;
+import problem.TTPGenome;
 
 import java.util.Collections;
 import java.util.List;

@@ -1,8 +1,8 @@
-package ea;
+package genetic;
 
 import lombok.Getter;
 import problem.ProblemDTO;
-import ttp.TTPGenome;
+import problem.TTPGenome;
 
 import java.util.Collections;
 import java.util.List;

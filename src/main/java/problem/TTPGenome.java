@@ -1,10 +1,7 @@
-package ttp;
+package problem;
 
 import lombok.Getter;
 import lombok.Setter;
-import problem.DistanceTable;
-import problem.ItemDTO;
-import problem.ProblemDTO;
 
 import java.util.ArrayList;
 import java.util.Collections;

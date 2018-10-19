@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Getter
@@ -80,9 +81,31 @@ public class TTPGenome {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("[");
-        tour.forEach(node -> sb.append(node + ","));
+        tour.forEach(node -> sb.append(node).append(','));
         sb.deleteCharAt(sb.length() - 1);
         sb.append(']');
         return sb.toString();
     }
+
+    public List<Integer> getTour() {
+        return tour;
+    }
+
+    public static Comparator<TTPGenome> evaluationComparator(ProblemDTO problemDTO) {
+        return Comparator.comparingDouble(genome -> genome.evaluate(problemDTO));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof TTPGenome)) {
+            throw new IllegalArgumentException("Cannot equal TTPGenome to " + obj.getClass().getSimpleName());
+        }
+        return this.tour.equals(((TTPGenome) obj).getTour());
+    }
+
+    @Override
+    public int hashCode() {
+        return tour.hashCode();
+    }
+
 }

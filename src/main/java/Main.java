@@ -1,9 +1,10 @@
-import genetic.GeneticRun;
+import tabu.TabuRun;
 
 public class Main {
 
     public static void main(String... args) {
-        GeneticRun.run();
+//        GeneticRun.run();
+        TabuRun.run();
     }
 
 }

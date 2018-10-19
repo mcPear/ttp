@@ -3,7 +3,9 @@ package genetic;
 import genetic.operation.Crossover;
 import genetic.operation.Mutation;
 import genetic.operation.Selection;
-import problem.*;
+import problem.ProblemDTO;
+import problem.ProblemReader;
+import problem.TTPGenome;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,7 @@ public class GeneticRun {
     private static final ProblemDTO problemDTO = ProblemReader.read();
 
     public static void run() {
-        initGreedyPickingPlanStatics();
+        genetic.TTPContext.initGreedyPickingPlanStatics(problemDTO);
         OverallResult overallResult = new OverallResult();
         GenerationResult bestResult = null;
         List<TTPGenome> currentPopulation = initialPopulation();
@@ -34,11 +36,6 @@ public class GeneticRun {
         System.out.println(overallResult.toCsvString());
         System.out.println("The best profit: " + bestResult.best);
         System.out.println("The best tour: " + bestResult.bestGenome);
-    }
-
-    private static void initGreedyPickingPlanStatics() {
-        DistanceTable.initDistances(problemDTO.nodes);
-        GreedyPickingPlanGenerator.initPickedItemsWeightInNode(problemDTO.nodes, problemDTO.items, problemDTO.capacity);
     }
 
     private static List<TTPGenome> nextPopulation(List<TTPGenome> basePopulation) {

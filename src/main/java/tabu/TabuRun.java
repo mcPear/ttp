@@ -15,28 +15,34 @@ public class TabuRun {
     public static void run() {
         genetic.TTPContext.initGreedyPickingPlanStatics(problemDTO);
         Set<TTPGenome> neighbours;
-        int noProgressIterationsCounter = 0;
+        Integer noProgressIterationsCounter = 0;
         TTPGenome currentBest = TTPGenome.randomInstance(problemDTO.dimension, problemDTO.items, problemDTO.capacity);
         TTPGenome overallBest = currentBest;
         tabu.add(currentBest);
+
         for (int i = 0; stopCondition(i, noProgressIterationsCounter); i++) {
             neighbours = neighbours(currentBest);
             neighbours.removeAll(tabu);
             currentBest = best(neighbours);
             tabu.add(currentBest);
-            if (currentBest.evaluate(problemDTO) > overallBest.evaluate(problemDTO)) {
+            if (isGreater(currentBest, overallBest)) {
                 overallBest = currentBest;
                 noProgressIterationsCounter = 0;
             } else {
                 noProgressIterationsCounter++;
             }
-            System.out.println(currentBest.evaluate(problemDTO).intValue());
+            logCurrentBest(currentBest);
         }
-        System.out.println("Overall best: " + overallBest.evaluate(problemDTO) + "\n");
+
+        logOverallBest(overallBest);
     }
 
     private static boolean stopCondition(int i, int noProgressIterationsCounter) {
         return i < ITERATIONS_COUNT && noProgressIterationsCounter < NO_PROGRESS_ITERATIONS_COUNT;
+    }
+
+    private static boolean isGreater(TTPGenome currentBest, TTPGenome overallBest) {
+        return currentBest.evaluate(problemDTO) > overallBest.evaluate(problemDTO);
     }
 
     private static Set<TTPGenome> neighbours(TTPGenome genome) {//definicja sąsiedztwa - dokładnie 2 miasta są zamienione
@@ -56,6 +62,14 @@ public class TabuRun {
 
     private static TTPGenome best(Set<TTPGenome> list) {
         return Collections.max(list, TTPGenome.evaluationComparator(problemDTO));
+    }
+
+    private static void logCurrentBest(TTPGenome currentBest) {
+        System.out.println(currentBest.evaluate(problemDTO).intValue());
+    }
+
+    private static void logOverallBest(TTPGenome overallBest) {
+        System.out.println("Overall best: " + overallBest.evaluate(problemDTO) + "\n");
     }
 
 }

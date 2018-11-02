@@ -21,10 +21,10 @@ public class TabuRun {
         tabu.add(currentBest);
 
         for (int i = 0; stopCondition(i, noProgressIterationsCounter); i++) {
-            neighbours = neighbours(currentBest);
+            neighbours = neighbours(currentBest); //todo tylko k sąsiadów
             neighbours.removeAll(tabu);
             currentBest = best(neighbours);
-            tabu.add(currentBest);
+            tabu.add(currentBest); //todo czy warto ograniczyć rozmiar i zrzucać najstarsze ?
             if (isGreater(currentBest, overallBest)) {
                 overallBest = currentBest;
                 noProgressIterationsCounter = 0;

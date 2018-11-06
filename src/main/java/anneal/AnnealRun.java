@@ -9,17 +9,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AnnealRun {
+public class AnnealRun { //proper parameters
     private static final ProblemDTO problemDTO = ProblemReader.read();
     private static final int ITERATIONS_COUNT = 100_000; //fast for 100 k, great results
     private static final double TEMPERATURE = 100; //experimental
-    private static final double COOLING_STEP = TEMPERATURE / 100000;
+    private static final double COOLING_STEP = TEMPERATURE / ITERATIONS_COUNT;
 
     public static void run() {
         genetic.TTPContext.initGreedyPickingPlanStatics(problemDTO);
         TTPGenome current = TTPGenome.randomInstance(problemDTO.dimension, problemDTO.items, problemDTO.capacity);
         TTPGenome overallBest = current;
-        TTPGenome neighbour = null;
+        TTPGenome neighbour;
         double temperature = TEMPERATURE;
 
         for (int i = 0; stopCondition(i); i++) {
@@ -32,8 +32,8 @@ public class AnnealRun {
             if (isGreater(current, overallBest)) {
                 overallBest = current;
             }
-            temperature = coolerTemperature(temperature);
-            logCurrent(current);
+            temperature = lowerTemperature(temperature);
+            //logCurrent(current);
         }
 
         logOverallBest(overallBest);
@@ -47,9 +47,9 @@ public class AnnealRun {
         return currentBest.evaluate(problemDTO) > overallBest.evaluate(problemDTO);
     }
 
-    private static double coolerTemperature(double temperature) {
-        double coolled = temperature - COOLING_STEP;
-        return coolled > 0 ? coolled : temperature;
+    private static double lowerTemperature(double temperature) {
+        double lower = temperature - COOLING_STEP;
+        return lower > 0 ? lower : temperature;
     }
 
     private static TTPGenome getRandomNeighbour(TTPGenome genome) {//definicja sąsiedztwa - dokładnie 2 miasta są zamienione
@@ -78,12 +78,8 @@ public class AnnealRun {
 
     private static boolean accept(TTPGenome genome, TTPGenome neighbour, double temperature) {
         double diff = neighbour.getEvaluation() - genome.getEvaluation();
-//        System.out.println("Diff: " + diff);
-//        System.out.println("Temp: " + temperature);
         double div = diff / temperature;
-//        System.out.println("Div: " + div); //(-inf,0) i powinna zaczynać od zera i rosnąć ewentualnie maleć
         double probability = Math.exp(div);
-//        System.out.println("Probability: " + probability);
         return Rand.object.nextDouble() <= probability;
     }
 

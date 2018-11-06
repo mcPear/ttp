@@ -6,11 +6,12 @@ import problem.TTPGenome;
 
 import java.util.*;
 
-public class TabuRun {
+public class TabuRun {//todo dostrój, żeby leciał około 10 sekund, dostrój neighbours_count, weź funkcję losowego osobnika z anneal
     private static final ProblemDTO problemDTO = ProblemReader.read();
     private static final Set<TTPGenome> tabu = new HashSet<>();
     private static final int ITERATIONS_COUNT = 10000;
-    private static final int NO_PROGRESS_ITERATIONS_COUNT = 300;
+    private static final int NO_PROGRESS_ITERATIONS_COUNT = 1000;
+    private static final int NEIGHBOURS_COUNT = 300;
 
     public static void run() {
         genetic.TTPContext.initGreedyPickingPlanStatics(problemDTO);
@@ -31,7 +32,7 @@ public class TabuRun {
             } else {
                 noProgressIterationsCounter++;
             }
-            logCurrentBest(currentBest);
+//            logCurrentBest(currentBest);
         }
 
         logOverallBest(overallBest);

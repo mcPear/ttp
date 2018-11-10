@@ -12,11 +12,11 @@ import java.util.List;
 
 public class GeneticRun {
 
-    private static final int populationSize = 1000;
-    private static final int tournamentSize = 5;
-    private static final double crossingChancePercent = 80;
-    private static final double mutationChancePercent = 5;
-    private static final double generationsCount = 100;
+    private static final int populationSize = 400;
+    private static final int tournamentSize = 6;
+    private static final double crossingChancePercent = 70;
+    private static final double mutationChancePercent = 4;
+    private static final double generationsCount = 90;
     private static final ProblemDTO problemDTO = ProblemReader.read();
 
     public static void run() {

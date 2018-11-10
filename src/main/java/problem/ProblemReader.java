@@ -6,8 +6,7 @@ import java.util.Scanner;
 
 public class ProblemReader {
 
-    private static final InputStream FILE = ProblemReader.class.getResourceAsStream("/ttp_student/hard_0.ttp");
-    private static Scanner sc = new Scanner(FILE);
+    private static Scanner sc;
 
     public static ProblemDTO read(InputStream stream) {
         sc = new Scanner(stream);
@@ -38,8 +37,10 @@ public class ProblemReader {
         return problemDTO;
     }
 
-    public static ProblemDTO read() {
-        return read(FILE);
+    public static ProblemDTO read(String fileName) {
+        String path = String.format("/ttp_student/%s.ttp", fileName);
+        final InputStream file = ProblemReader.class.getResourceAsStream(path);
+        return read(file);
     }
 
     private static int nextInt() {

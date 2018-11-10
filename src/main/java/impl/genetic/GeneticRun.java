@@ -1,26 +1,36 @@
-package genetic;
+package impl.genetic;
 
-import genetic.operation.Crossover;
-import genetic.operation.Mutation;
-import genetic.operation.Selection;
+import api.AlgorithmRun;
+import context.TTPContext;
+import impl.genetic.operation.Crossover;
+import impl.genetic.operation.Mutation;
+import impl.genetic.operation.Selection;
 import problem.ProblemDTO;
 import problem.ProblemReader;
 import problem.TTPGenome;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-public class GeneticRun {
+public class GeneticRun implements AlgorithmRun {
 
     private static final int populationSize = 400;
     private static final int tournamentSize = 6;
     private static final double crossingChancePercent = 70;
     private static final double mutationChancePercent = 4;
     private static final double generationsCount = 90;
-    private static final ProblemDTO problemDTO = ProblemReader.read();
+    private final ProblemDTO problemDTO;
+    private final Set<TTPGenome> births;
 
-    public static void run() {
-        genetic.TTPContext.initGreedyPickingPlanStatics(problemDTO);
+    public GeneticRun(String fileName) {
+        this.problemDTO = ProblemReader.read(fileName);
+        this.births = new HashSet<>();
+    }
+
+    public RunResult run() {
+        TTPContext.initGreedyPickingPlanStatics(problemDTO);
         OverallResult overallResult = new OverallResult();
         GenerationResult bestResult = null;
         List<TTPGenome> currentPopulation = initialPopulation();
@@ -30,21 +40,23 @@ public class GeneticRun {
             if (bestResult == null || bestResult.lowerThan(generationResult)) {
                 bestResult = generationResult;
             }
+            births.addAll(currentPopulation);
             currentPopulation = nextPopulation(currentPopulation);
-            System.out.println("Gen no. " + (i + 1));
+//            System.out.println("Gen no. " + (i + 1));
         }
-        System.out.println(overallResult.toCsvString());
+//        System.out.println(overallResult.toCsvString());
         System.out.println("The best profit: " + bestResult.best);
-        System.out.println("The best tour: " + bestResult.bestGenome);
+//        System.out.println("The best tour: " + bestResult.bestGenome);
+        return new RunResult(bestResult.best, births.size());
     }
 
-    private static List<TTPGenome> nextPopulation(List<TTPGenome> basePopulation) {
+    private List<TTPGenome> nextPopulation(List<TTPGenome> basePopulation) {
         List<TTPGenome> selectedPopulation = Selection.select(basePopulation, tournamentSize, problemDTO);
         List<TTPGenome> crossedPopulation = Crossover.cross(selectedPopulation, crossingChancePercent);
         return Mutation.mutate(crossedPopulation, mutationChancePercent);
     }
 
-    public static List<TTPGenome> initialPopulation() {
+    public List<TTPGenome> initialPopulation() {
         List<TTPGenome> initialPopulation = new ArrayList<>();
         for (int i = 0; i < populationSize; i++) {
             initialPopulation.add(
@@ -54,7 +66,7 @@ public class GeneticRun {
         return initialPopulation;
     }
 
-    private static GenerationResult generationResult(List<TTPGenome> generation, ProblemDTO problemDTO) {
+    private GenerationResult generationResult(List<TTPGenome> generation, ProblemDTO problemDTO) {
         return new GenerationResult(generation, problemDTO);
     }
 

@@ -1,4 +1,4 @@
-package genetic;
+package impl.genetic;
 
 public class Rand {
 

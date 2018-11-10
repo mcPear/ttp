@@ -1,12 +1,13 @@
-import anneal.AnnealRun;
-import tabu.TabuRun;
+import executor.TenTimesExecutor;
+import executor.TenTimesExecutorResult;
+import impl.anneal.AnnealRun;
 
 public class Main {
 
     public static void main(String... args) {
-//        GeneticRun.run();
-        TabuRun.run();
-//        AnnealRun.run();
+        String fileName = "medium_0";
+        TenTimesExecutorResult tenTimesExecutorResult = TenTimesExecutor.execute(new AnnealRun(fileName));
+        System.out.println(tenTimesExecutorResult);
     }
 
 }

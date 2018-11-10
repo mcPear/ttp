@@ -1,4 +1,4 @@
-package genetic;
+package impl.genetic;
 
 import lombok.Getter;
 import problem.ProblemDTO;

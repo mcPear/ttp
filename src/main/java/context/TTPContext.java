@@ -1,4 +1,4 @@
-package genetic;
+package context;
 
 import problem.DistanceTable;
 import problem.GreedyPickingPlanGenerator;

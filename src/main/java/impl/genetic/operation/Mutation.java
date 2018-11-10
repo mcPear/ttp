@@ -1,6 +1,6 @@
-package genetic.operation;
+package impl.genetic.operation;
 
-import genetic.Rand;
+import impl.genetic.Rand;
 import problem.TTPGenome;
 
 import java.util.Collections;

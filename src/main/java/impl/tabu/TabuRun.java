@@ -1,21 +1,28 @@
-package tabu;
+package impl.tabu;
 
-import genetic.Rand;
+import api.AlgorithmRun;
+import context.TTPContext;
+import impl.genetic.Rand;
 import problem.ProblemDTO;
 import problem.ProblemReader;
 import problem.TTPGenome;
 
 import java.util.*;
 
-public class TabuRun {
-    private static final ProblemDTO problemDTO = ProblemReader.read();
-    private static final Set<TTPGenome> tabu = new HashSet<>();
+public class TabuRun implements AlgorithmRun {
+    private final ProblemDTO problemDTO;
+    private final Set<TTPGenome> tabu;
     private static final int ITERATIONS_COUNT = 900;
     private static final int NO_PROGRESS_ITERATIONS_COUNT = ITERATIONS_COUNT;
     private static final int NEIGHBOURS_COUNT = 150;
 
-    public static void run() {
-        genetic.TTPContext.initGreedyPickingPlanStatics(problemDTO);
+    public TabuRun(String fileName) {
+        this.problemDTO = ProblemReader.read(fileName);
+        this.tabu = new HashSet<>();
+    }
+
+    public RunResult run() {
+        TTPContext.initGreedyPickingPlanStatics(problemDTO);
         Set<TTPGenome> neighbours;
         Integer noProgressIterationsCounter = 0;
         TTPGenome currentBest = TTPGenome.randomInstance(problemDTO.dimension, problemDTO.items, problemDTO.capacity);
@@ -37,17 +44,18 @@ public class TabuRun {
         }
 
         logOverallBest(overallBest);
+        return new RunResult(overallBest.evaluate(problemDTO).intValue(), tabu.size());
     }
 
-    private static boolean stopCondition(int i, int noProgressIterationsCounter) {
+    private boolean stopCondition(int i, int noProgressIterationsCounter) {
         return i < ITERATIONS_COUNT && noProgressIterationsCounter < NO_PROGRESS_ITERATIONS_COUNT;
     }
 
-    private static boolean isGreater(TTPGenome currentBest, TTPGenome overallBest) {
+    private boolean isGreater(TTPGenome currentBest, TTPGenome overallBest) {
         return currentBest.evaluate(problemDTO) > overallBest.evaluate(problemDTO);
     }
 
-    private static Set<TTPGenome> neighbours(TTPGenome genome, int neighboursCount) {//definicja sąsiedztwa - dokładnie 2 miasta są zamienione
+    private Set<TTPGenome> neighbours(TTPGenome genome, int neighboursCount) {//definicja sąsiedztwa - dokładnie 2 miasta są zamienione
         Set<TTPGenome> neighbours = new HashSet<>();
         List<Integer> tourCopy = new ArrayList<>(genome.getTour());
         int i, j;
@@ -68,15 +76,15 @@ public class TabuRun {
         return neighbours;
     }
 
-    private static TTPGenome best(Set<TTPGenome> list) {
+    private TTPGenome best(Set<TTPGenome> list) {
         return Collections.max(list, TTPGenome.evaluationComparator(problemDTO));
     }
 
-    private static void logCurrentBest(TTPGenome currentBest) {
+    private void logCurrentBest(TTPGenome currentBest) {
         System.out.println(currentBest.evaluate(problemDTO).intValue());
     }
 
-    private static void logOverallBest(TTPGenome overallBest) {
+    private void logOverallBest(TTPGenome overallBest) {
         System.out.println("Overall best: " + overallBest.evaluate(problemDTO) + "\n");
     }
 

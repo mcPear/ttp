@@ -1,13 +1,38 @@
-import executor.TenTimesExecutor;
-import executor.TenTimesExecutorResult;
+import executor.FilesExecutor;
+import executor.FilesExecutorResult;
 import impl.anneal.AnnealRun;
+import impl.genetic.GeneticRun;
+import impl.tabu.TabuRun;
+
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 public class Main {
 
-    public static void main(String... args) {
-        String fileName = "medium_0";
-        TenTimesExecutorResult tenTimesExecutorResult = TenTimesExecutor.execute(new AnnealRun(fileName));
-        System.out.println(tenTimesExecutorResult);
+    public static void main(String... args) throws Exception {
+        List<String> fileNames = Arrays.asList(
+                "easy_0", "easy_1", "easy_2", "easy_3", "easy_4",
+                "medium_0", "medium_1", "medium_2", "medium_3", "medium_4",
+                "hard_0", "hard_1", "hard_2", "hard_3", "hard_4"
+        );
+        FilesExecutorResult filesExecutorResultA = FilesExecutor.execute(AnnealRun.class, fileNames);
+        FilesExecutorResult filesExecutorResultT = FilesExecutor.execute(TabuRun.class, fileNames);
+        FilesExecutorResult filesExecutorResultG = FilesExecutor.execute(GeneticRun.class, fileNames);
+        System.out.println(filesExecutorResultA);
+        System.out.println(filesExecutorResultT);
+        System.out.println(filesExecutorResultG);
+        export(filesExecutorResultA.toString(), "AnnealRun");
+        export(filesExecutorResultT.toString(), "TabuRun");
+        export(filesExecutorResultG.toString(), "GeneticRun");
+    }
+
+    private static void export(String text, String fileName) throws FileNotFoundException {
+        try (PrintWriter out = new PrintWriter(fileName + new Date() + ".txt")) {
+            out.println(text);
+        }
     }
 
 }

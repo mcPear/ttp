@@ -7,14 +7,17 @@ import java.util.List;
 
 public class FilesExecutor {
 
-    public static FilesExecutorResult execute(Class<AlgorithmRun> algorithmRunClass, List<String> fileNames) throws NoSuchMethodException {
-        List<TenTimesExecutorResult> tenTimesExecutorResults = new ArrayList<>();
+    public static FilesExecutorResult execute(Class<? extends AlgorithmRun> algorithmRunClass, List<String> fileNames) throws Exception {
+        List<FileExecutionResult> fileExecutionResults = new ArrayList<>();
         for (String fileName : fileNames) {
-            tenTimesExecutorResults.add(
+            fileExecutionResults.add(new FileExecutionResult(
+                    fileName,
                     TenTimesExecutor.execute(
-                            algorithmRunClass.getConstructor(String.class).newInstance(fileName)))
+                            algorithmRunClass.getConstructor(String.class).newInstance(fileName))
+            ));
+            System.out.println("FilesExecutor: done file: " + fileName);
         }
-
+        return new FilesExecutorResult(algorithmRunClass.getSimpleName(), fileExecutionResults);
     }
 
 

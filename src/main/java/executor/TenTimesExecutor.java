@@ -18,7 +18,10 @@ public class TenTimesExecutor {
 
         DescriptiveStatistics birthsCountStats = new DescriptiveStatistics();
         results.forEach(result -> birthsCountStats.addValue(result.getBirthsCount()));
-        return new TenTimesExecutorResult(profitStats.getMean(), profitStats.getStandardDeviation(), birthsCountStats.getMean());
+        return new TenTimesExecutorResult(
+                Math.round(profitStats.getMean() * 10.0) / 10.0,
+                Math.round(profitStats.getStandardDeviation() * 10.0) / 10.0,
+                Math.round(birthsCountStats.getMean() * 10.0) / 10.0);
     }
 
 }

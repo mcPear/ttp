@@ -25,10 +25,9 @@ public class TenTimesExecutorResult {
 
     @Override
     public String toString() {
-        return "TenTimesExecutorResult{" +
-                "avgProfit=" + avgProfit +
-                ", standardDeviation=" + standardDeviation +
-                ", avgBirthsCount=" + avgBirthsCount +
-                '}';
+        return " " +
+                "avg=" + avgProfit +
+                ", dev=" + standardDeviation +
+                ", avgBirths=" + avgBirthsCount;
     }
 }

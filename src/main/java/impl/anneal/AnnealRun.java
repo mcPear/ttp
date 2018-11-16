@@ -11,27 +11,27 @@ import java.util.*;
 
 public class AnnealRun implements AlgorithmRun {
     private final ProblemDTO problemDTO;
-    private static final int ITERATIONS_COUNT = 100_000; //fast for 100 k, great results
+    private static final int ITERATIONS_COUNT = 300_000; //fast for 100 k, great results
     private static final double TEMPERATURE = 100; //experimental
     private static final double COOLING_STEP = TEMPERATURE / ITERATIONS_COUNT;
-    private final Set<TTPGenome> births;
+    private final TTPContext ttpContext;
 
     public AnnealRun(String fileName) {
         this.problemDTO = ProblemReader.read(fileName);
-        this.births = new HashSet<>();
+        ttpContext = new TTPContext(problemDTO);
     }
 
     public RunResult run() {
-        TTPContext.initGreedyPickingPlanStatics(problemDTO);
-        TTPGenome current = TTPGenome.randomInstance(problemDTO.dimension, problemDTO.items, problemDTO.capacity);
+        TTPGenome current = TTPGenome.randomInstance(problemDTO.dimension, ttpContext.getGreedyPickingPlan());
         TTPGenome overallBest = current;
         TTPGenome neighbour;
+        final Set<TTPGenome> births = new HashSet<>();
         double temperature = TEMPERATURE;
 
         for (int i = 0; stopCondition(i); i++) {
             neighbour = getRandomNeighbour(current);
             births.add(neighbour);
-            if (neighbour.evaluate(problemDTO) >= current.evaluate(problemDTO)) {
+            if (neighbour.evaluate(problemDTO, ttpContext) >= current.evaluate(problemDTO, ttpContext)) {
                 current = neighbour;
             } else if (accept(current, neighbour, temperature)) {
                 current = neighbour;
@@ -44,7 +44,7 @@ public class AnnealRun implements AlgorithmRun {
         }
 
         logOverallBest(overallBest);
-        return new RunResult(overallBest.evaluate(problemDTO).intValue(), births.size());
+        return new RunResult(overallBest.evaluate(problemDTO, ttpContext).intValue(), births.size());
     }
 
     private boolean stopCondition(int i) {
@@ -52,7 +52,7 @@ public class AnnealRun implements AlgorithmRun {
     }
 
     private boolean isGreater(TTPGenome currentBest, TTPGenome overallBest) {
-        return currentBest.evaluate(problemDTO) > overallBest.evaluate(problemDTO);
+        return currentBest.evaluate(problemDTO, ttpContext) > overallBest.evaluate(problemDTO, ttpContext);
     }
 
     private double lowerTemperature(double temperature) {
@@ -76,11 +76,11 @@ public class AnnealRun implements AlgorithmRun {
     }
 
     private void logCurrent(TTPGenome currentBest) {
-        System.out.println(currentBest.evaluate(problemDTO).intValue());
+        System.out.println(currentBest.evaluate(problemDTO, ttpContext).intValue());
     }
 
     private void logOverallBest(TTPGenome overallBest) {
-        System.out.println("Overall best: " + overallBest.evaluate(problemDTO) + "\n");
+        System.out.println("Overall best: " + overallBest.evaluate(problemDTO, ttpContext) + "\n");
     }
 
     private boolean accept(TTPGenome genome, TTPGenome neighbour, double temperature) {

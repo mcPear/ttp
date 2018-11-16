@@ -1,5 +1,6 @@
 package problem;
 
+import context.TTPContext;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,9 +22,9 @@ public class TTPGenome {
         this.tour = tour;
     }
 
-    public Double evaluate(ProblemDTO data) {
+    public Double evaluate(ProblemDTO data, TTPContext ttpContext) {
         if (evaluation == null) {
-            evaluation = profitSum(data.items) - data.rentingRatio * totalTime(data.maxSpeed, data.minSpeed, data.capacity);
+            evaluation = profitSum(data.items) - data.rentingRatio * totalTime(data.maxSpeed, data.minSpeed, data.capacity, ttpContext);
         }
         return evaluation;
     }
@@ -42,21 +43,21 @@ public class TTPGenome {
         return sum;
     }
 
-    private double totalTime(double maxSpeed, double minSpeed, int capacity) {
+    private double totalTime(double maxSpeed, double minSpeed, int capacity, TTPContext ttpContext) {
         double time = 0;
         int currentKnapsackWeight = 0;
         for (int i = 0; i < tour.size() - 1; i++) {
             int from = tour.get(i);
             int to = tour.get(i + 1);
-            double distance = distance(from, to);
-            currentKnapsackWeight += pickedItemsWeight(from);
+            double distance = distance(from, to, ttpContext.getDistanceTable());
+            currentKnapsackWeight += pickedItemsWeight(from, ttpContext.getGreedyPickingPlan());
             time += distance * velocity(maxSpeed, minSpeed, capacity, currentKnapsackWeight);
         }
         return time;
     }
 
-    private int pickedItemsWeight(int node) {
-        return GreedyPickingPlanGenerator.pickedItemsWeightInNode.get(node);
+    private int pickedItemsWeight(int node, GreedyPickingPlan greedyPickingPlan) {
+        return greedyPickingPlan.getPickedItemsWeightInNode().get(node);
     }
 
     private double velocity(double maxSpeed, double minSpeed, int maxKnapsackCapacity, int currentKnapsackWeight) {
@@ -64,17 +65,17 @@ public class TTPGenome {
                 currentKnapsackWeight * (maxSpeed - minSpeed) / maxKnapsackCapacity;
     }
 
-    private double distance(int from, int to) {
-        return DistanceTable.get(from, to);
+    private double distance(int from, int to, DistanceTable distanceTable) {
+        return distanceTable.get(from, to);
     }
 
-    public static TTPGenome randomInstance(int citiesCount, List<ItemDTO> items, int capacity) {
+    public static TTPGenome randomInstance(int citiesCount, GreedyPickingPlan greedyPickingPlan) {
         List<Integer> tour = new ArrayList<>();
         for (int i = 1; i < citiesCount; i++) {
             tour.add(i);
         }
         Collections.shuffle(tour);
-        List<Integer> pickingPlan = GreedyPickingPlanGenerator.getPickingPlan(items, capacity);
+        List<Integer> pickingPlan = greedyPickingPlan.getPickingPlan();
         return new TTPGenome(pickingPlan, tour);
     }
 
@@ -91,8 +92,8 @@ public class TTPGenome {
         return tour;
     }
 
-    public static Comparator<TTPGenome> evaluationComparator(ProblemDTO problemDTO) {
-        return Comparator.comparingDouble(genome -> genome.evaluate(problemDTO));
+    public static Comparator<TTPGenome> evaluationComparator(ProblemDTO problemDTO, TTPContext ttpContext) {
+        return Comparator.comparingDouble(genome -> genome.evaluate(problemDTO, ttpContext));
     }
 
     @Override

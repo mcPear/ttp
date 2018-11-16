@@ -20,17 +20,18 @@ public class GeneticRun implements AlgorithmRun {
     private static final int tournamentSize = 6;
     private static final double crossingChancePercent = 70;
     private static final double mutationChancePercent = 4;
-    private static final double generationsCount = 90;
+    private static final double generationsCount = 200;
     private final ProblemDTO problemDTO;
-    private final Set<TTPGenome> births;
+    private Set<TTPGenome> births;
+    private final TTPContext ttpContext;
 
     public GeneticRun(String fileName) {
         this.problemDTO = ProblemReader.read(fileName);
-        this.births = new HashSet<>();
+        ttpContext = new TTPContext(problemDTO);
     }
 
     public RunResult run() {
-        TTPContext.initGreedyPickingPlanStatics(problemDTO);
+        this.births = new HashSet<>();
         OverallResult overallResult = new OverallResult();
         GenerationResult bestResult = null;
         List<TTPGenome> currentPopulation = initialPopulation();
@@ -51,7 +52,7 @@ public class GeneticRun implements AlgorithmRun {
     }
 
     private List<TTPGenome> nextPopulation(List<TTPGenome> basePopulation) {
-        List<TTPGenome> selectedPopulation = Selection.select(basePopulation, tournamentSize, problemDTO);
+        List<TTPGenome> selectedPopulation = Selection.select(basePopulation, tournamentSize, problemDTO, ttpContext);
         List<TTPGenome> crossedPopulation = Crossover.cross(selectedPopulation, crossingChancePercent);
         return Mutation.mutate(crossedPopulation, mutationChancePercent);
     }
@@ -61,13 +62,13 @@ public class GeneticRun implements AlgorithmRun {
         for (int i = 0; i < populationSize; i++) {
             initialPopulation.add(
                     TTPGenome.randomInstance(
-                            problemDTO.dimension, problemDTO.items, problemDTO.capacity));
+                            problemDTO.dimension, ttpContext.getGreedyPickingPlan()));
         }
         return initialPopulation;
     }
 
     private GenerationResult generationResult(List<TTPGenome> generation, ProblemDTO problemDTO) {
-        return new GenerationResult(generation, problemDTO);
+        return new GenerationResult(generation, problemDTO, ttpContext);
     }
 
 }

@@ -1,14 +1,24 @@
 package context;
 
 import problem.DistanceTable;
-import problem.GreedyPickingPlanGenerator;
+import problem.GreedyPickingPlan;
 import problem.ProblemDTO;
 
 public class TTPContext {
 
-    public static void initGreedyPickingPlanStatics(ProblemDTO problemDTO) {
-        DistanceTable.initDistances(problemDTO.nodes);
-        GreedyPickingPlanGenerator.initPickedItemsWeightInNode(problemDTO.nodes, problemDTO.items, problemDTO.capacity);
+    private final DistanceTable distanceTable;
+    private final GreedyPickingPlan greedyPickingPlan;
+
+    public TTPContext(ProblemDTO problemDTO) {
+        this.distanceTable = new DistanceTable(problemDTO.nodes);
+        this.greedyPickingPlan = new GreedyPickingPlan(problemDTO);
     }
 
+    public DistanceTable getDistanceTable() {
+        return distanceTable;
+    }
+
+    public GreedyPickingPlan getGreedyPickingPlan() {
+        return greedyPickingPlan;
+    }
 }

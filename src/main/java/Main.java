@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Main {
 
-    public static void main(String... args) throws Exception {
+    public static void main(String... args) throws Exception { //todo dla wszystich leci około minuty po tuningu
         List<String> fileNames = Arrays.asList(
                 "easy_0", "easy_1", "easy_2", "easy_3", "easy_4",
                 "medium_0", "medium_1", "medium_2", "medium_3", "medium_4",

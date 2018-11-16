@@ -1,5 +1,6 @@
 package impl.genetic;
 
+import context.TTPContext;
 import lombok.Getter;
 import problem.ProblemDTO;
 import problem.TTPGenome;
@@ -16,13 +17,13 @@ public class GenerationResult {
     public final int worst;
     public final TTPGenome bestGenome;
 
-    public GenerationResult(List<TTPGenome> generation, ProblemDTO problemDTO) {
-        List<Double> evaluationList = generation.stream().map(genome -> genome.evaluate(problemDTO)).collect(Collectors.toList());
+    public GenerationResult(List<TTPGenome> generation, ProblemDTO problemDTO, TTPContext ttpContext) {
+        List<Double> evaluationList = generation.stream().map(genome -> genome.evaluate(problemDTO, ttpContext)).collect(Collectors.toList());
         Collections.sort(evaluationList);
         best = evaluationList.get(evaluationList.size() - 1).intValue();
         middle = evaluationList.get(evaluationList.size() / 2).intValue();
         worst = evaluationList.get(0).intValue();
-        bestGenome = generation.stream().filter(genome -> genome.evaluate(problemDTO).intValue() == best).findFirst().get();
+        bestGenome = generation.stream().filter(genome -> genome.evaluate(problemDTO, ttpContext).intValue() == best).findFirst().get();
     }
 
     public boolean lowerThan(GenerationResult other) {

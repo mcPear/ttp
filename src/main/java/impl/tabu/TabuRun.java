@@ -11,22 +11,23 @@ import java.util.*;
 
 public class TabuRun implements AlgorithmRun {
     private final ProblemDTO problemDTO;
-    private final Set<TTPGenome> tabu;
-    private static final int ITERATIONS_COUNT = 900;
+    private Set<TTPGenome> tabu;
+    private static final int ITERATIONS_COUNT = 1500;
     private static final int NO_PROGRESS_ITERATIONS_COUNT = ITERATIONS_COUNT;
-    private static final int NEIGHBOURS_COUNT = 150;
+    private static final int NEIGHBOURS_COUNT = 300;
+    private final TTPContext ttpContext;
 
     public TabuRun(String fileName) {
         this.problemDTO = ProblemReader.read(fileName);
-        this.tabu = new HashSet<>();
+        ttpContext = new TTPContext(problemDTO);
     }
 
     public RunResult run() {
-        TTPContext.initGreedyPickingPlanStatics(problemDTO);
         Set<TTPGenome> neighbours;
         Integer noProgressIterationsCounter = 0;
-        TTPGenome currentBest = TTPGenome.randomInstance(problemDTO.dimension, problemDTO.items, problemDTO.capacity);
+        TTPGenome currentBest = TTPGenome.randomInstance(problemDTO.dimension, ttpContext.getGreedyPickingPlan());
         TTPGenome overallBest = currentBest;
+        this.tabu = new HashSet<>();
         tabu.add(currentBest);
 
         for (int i = 0; stopCondition(i, noProgressIterationsCounter); i++) {
@@ -44,7 +45,7 @@ public class TabuRun implements AlgorithmRun {
         }
 
         logOverallBest(overallBest);
-        return new RunResult(overallBest.evaluate(problemDTO).intValue(), tabu.size());
+        return new RunResult(overallBest.evaluate(problemDTO, ttpContext).intValue(), tabu.size());
     }
 
     private boolean stopCondition(int i, int noProgressIterationsCounter) {
@@ -52,7 +53,7 @@ public class TabuRun implements AlgorithmRun {
     }
 
     private boolean isGreater(TTPGenome currentBest, TTPGenome overallBest) {
-        return currentBest.evaluate(problemDTO) > overallBest.evaluate(problemDTO);
+        return currentBest.evaluate(problemDTO, ttpContext) > overallBest.evaluate(problemDTO, ttpContext);
     }
 
     private Set<TTPGenome> neighbours(TTPGenome genome, int neighboursCount) {//definicja sąsiedztwa - dokładnie 2 miasta są zamienione
@@ -77,15 +78,15 @@ public class TabuRun implements AlgorithmRun {
     }
 
     private TTPGenome best(Set<TTPGenome> list) {
-        return Collections.max(list, TTPGenome.evaluationComparator(problemDTO));
+        return Collections.max(list, TTPGenome.evaluationComparator(problemDTO, ttpContext));
     }
 
     private void logCurrentBest(TTPGenome currentBest) {
-        System.out.println(currentBest.evaluate(problemDTO).intValue());
+        System.out.println(currentBest.evaluate(problemDTO, ttpContext).intValue());
     }
 
     private void logOverallBest(TTPGenome overallBest) {
-        System.out.println("Overall best: " + overallBest.evaluate(problemDTO) + "\n");
+        System.out.println("Overall best: " + overallBest.evaluate(problemDTO, ttpContext) + "\n");
     }
 
 }

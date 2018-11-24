@@ -16,6 +16,6 @@ public class GAplusSA implements AlgorithmRun {
     @Override
     public RunResult run() {
         TTPGenome gaBest = new GeneticRun(fileName).run().getGenome();
-        return new AnnealRun(fileName, gaBest).run();
+        return new AnnealRun(fileName, gaBest, null).run();
     }
 }

@@ -16,17 +16,26 @@ import java.util.Set;
 
 public class GeneticRun implements AlgorithmRun {
 
-    private static final int populationSize = 400;
-    private static final int tournamentSize = 6;
+    private int populationSize = 400;
+    private static final int tournamentSize = 16;
     private static final double crossingChancePercent = 70;
     private static final double mutationChancePercent = 4;
     private static final double generationsCount = 200;
     private final ProblemDTO problemDTO;
     private Set<TTPGenome> births;
     private final TTPContext ttpContext;
+    private final List<TTPGenome> initialPopulation;
+
+    public GeneticRun(ProblemDTO problemDTO, TTPContext ttpContext, List<TTPGenome> initialPopulation, int populationSize) {
+        this.problemDTO = problemDTO;
+        this.initialPopulation = initialPopulation;
+        this.ttpContext = ttpContext;
+        this.populationSize = populationSize;
+    }
 
     public GeneticRun(String fileName) {
         this.problemDTO = ProblemReader.read(fileName);
+        this.initialPopulation = null;
         ttpContext = new TTPContext(problemDTO);
     }
 
@@ -34,7 +43,7 @@ public class GeneticRun implements AlgorithmRun {
         this.births = new HashSet<>();
         OverallResult overallResult = new OverallResult();
         GenerationResult bestResult = null;
-        List<TTPGenome> currentPopulation = initialPopulation();
+        List<TTPGenome> currentPopulation = initialPopulation != null ? initialPopulation : initialPopulation();
         for (int i = 0; i < generationsCount; i++) {
             GenerationResult generationResult = generationResult(currentPopulation, problemDTO);
             overallResult.add(generationResult);
@@ -58,7 +67,7 @@ public class GeneticRun implements AlgorithmRun {
         return Mutation.mutate(crossedPopulation, mutationChancePercent);
     }
 
-    public List<TTPGenome> initialPopulation() {
+    private List<TTPGenome> initialPopulation() {
         List<TTPGenome> initialPopulation = new ArrayList<>();
         for (int i = 0; i < populationSize; i++) {
             initialPopulation.add(

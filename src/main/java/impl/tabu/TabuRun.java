@@ -12,19 +12,20 @@ import java.util.*;
 public class TabuRun implements AlgorithmRun {
     private final ProblemDTO problemDTO;
     private Set<TTPGenome> tabu;
-    private static final int ITERATIONS_COUNT = 1500;
-    private static final int NO_PROGRESS_ITERATIONS_COUNT = ITERATIONS_COUNT;
+    private int ITERATIONS_COUNT = 1500;
+    private static final int NO_PROGRESS_ITERATIONS_COUNT = 9999999;
     private static final int NEIGHBOURS_COUNT = 300;
     private final TTPContext ttpContext;
     private final TTPGenome initialGenome;
 
     public TabuRun(String fileName) {
-        this(fileName, null);
+        this(fileName, null, null);
     }
 
-    public TabuRun(String fileName, TTPGenome initialGenome) {
+    public TabuRun(String fileName, TTPGenome initialGenome, Integer iterationsCount) {
         this.problemDTO = ProblemReader.read(fileName);
         this.initialGenome = initialGenome;
+        ITERATIONS_COUNT = iterationsCount != null ? iterationsCount : ITERATIONS_COUNT;
         ttpContext = new TTPContext(problemDTO);
     }
 

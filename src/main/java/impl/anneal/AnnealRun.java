@@ -13,20 +13,22 @@ import java.util.*;
 
 public class AnnealRun implements AlgorithmRun {
     private final ProblemDTO problemDTO;
-    private static final int ITERATIONS_COUNT = 25_000; //fast for 100 k, great results
+    private int ITERATIONS_COUNT = 25_000; //fast for 100 k, great results
     private static final double TEMPERATURE = 100; //experimental
-    private static final double COOLING_STEP = TEMPERATURE / ITERATIONS_COUNT;
+    private double COOLING_STEP = TEMPERATURE / ITERATIONS_COUNT;
     private final TTPContext ttpContext;
     private List<Integer> results;
     private final TTPGenome initialGenome;
 
     public AnnealRun(String fileName) {
-        this(fileName, null);
+        this(fileName, null, null);
     }
 
-    public AnnealRun(String fileName, TTPGenome initialGenome) {
+    public AnnealRun(String fileName, TTPGenome initialGenome, Integer iterationsCount) {
         this.problemDTO = ProblemReader.read(fileName);
         this.initialGenome = initialGenome;
+        this.ITERATIONS_COUNT = iterationsCount != null ? iterationsCount : ITERATIONS_COUNT;
+        COOLING_STEP = TEMPERATURE / ITERATIONS_COUNT;
         ttpContext = new TTPContext(problemDTO);
     }
 

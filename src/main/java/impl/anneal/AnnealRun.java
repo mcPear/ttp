@@ -7,14 +7,17 @@ import problem.ProblemDTO;
 import problem.ProblemReader;
 import problem.TTPGenome;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.*;
 
 public class AnnealRun implements AlgorithmRun {
     private final ProblemDTO problemDTO;
-    private static final int ITERATIONS_COUNT = 300_000; //fast for 100 k, great results
+    private static final int ITERATIONS_COUNT = 25_000; //fast for 100 k, great results
     private static final double TEMPERATURE = 100; //experimental
     private static final double COOLING_STEP = TEMPERATURE / ITERATIONS_COUNT;
     private final TTPContext ttpContext;
+    private List<Integer> results;
 
     public AnnealRun(String fileName) {
         this.problemDTO = ProblemReader.read(fileName);
@@ -26,6 +29,7 @@ public class AnnealRun implements AlgorithmRun {
         TTPGenome overallBest = current;
         TTPGenome neighbour;
         final Set<TTPGenome> births = new HashSet<>();
+        results = new ArrayList<>();
         double temperature = TEMPERATURE;
 
         for (int i = 0; stopCondition(i); i++) {
@@ -40,11 +44,21 @@ public class AnnealRun implements AlgorithmRun {
                 overallBest = current;
             }
             temperature = lowerTemperature(temperature);
-            //logCurrent(current);
+            results.add(current.evaluate(problemDTO, ttpContext).intValue());
+//            logCurrent(current);
         }
 
+        export(results);
         logOverallBest(overallBest);
         return new RunResult(overallBest.evaluate(problemDTO, ttpContext).intValue(), births.size());
+    }
+
+    private static void export(List<Integer> results) {
+        try (PrintWriter out = new PrintWriter("anneal result " + new Date() + ".txt")) {
+            results.forEach(out::println);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean stopCondition(int i) {

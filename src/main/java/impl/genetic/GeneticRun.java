@@ -44,6 +44,7 @@ public class GeneticRun implements AlgorithmRun {
             births.addAll(currentPopulation);
             currentPopulation = nextPopulation(currentPopulation);
 //            System.out.println("Gen no. " + (i + 1));
+            System.out.println(generationResult.best + " " + generationResult.middle + " " + generationResult.worst);
         }
 //        System.out.println(overallResult.toCsvString());
         System.out.println("The best profit: " + bestResult.best);

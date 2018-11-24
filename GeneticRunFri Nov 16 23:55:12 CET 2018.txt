@@ -1,0 +1,17 @@
+GeneticRun
+fileName='easy_0',  avg=4875.7, dev=21.9, avgBirths=70147.2
+fileName='easy_1',  avg=9349.0, dev=41.0, avgBirths=70143.9
+fileName='easy_2',  avg=12887.9, dev=60.1, avgBirths=70122.0
+fileName='easy_3',  avg=16858.0, dev=72.0, avgBirths=70200.2
+fileName='easy_4',  avg=21161.1, dev=133.4, avgBirths=70172.4
+fileName='medium_0',  avg=40597.1, dev=443.1, avgBirths=70160.9
+fileName='medium_1',  avg=75839.2, dev=1433.7, avgBirths=70081.7
+fileName='medium_2',  avg=108679.6, dev=1651.2, avgBirths=70154.0
+fileName='medium_3',  avg=141822.4, dev=2312.1, avgBirths=70189.2
+fileName='medium_4',  avg=175360.7, dev=3036.6, avgBirths=70136.9
+fileName='hard_0',  avg=-414268.2, dev=10376.5, avgBirths=71329.2
+fileName='hard_1',  avg=-957509.6, dev=17128.3, avgBirths=71265.2
+fileName='hard_2',  avg=-1436886.8, dev=23719.1, avgBirths=71251.1
+fileName='hard_3',  avg=-1827702.4, dev=25015.9, avgBirths=71145.5
+fileName='hard_4',  avg=-2182075.0, dev=42864.5, avgBirths=71140.5
+

@@ -1,0 +1,17 @@
+AnnealRun
+fileName='easy_0',  avg=4996.2, dev=18.0, avgBirths=298469.4
+fileName='easy_1',  avg=9592.4, dev=17.8, avgBirths=297620.2
+fileName='easy_2',  avg=13369.8, dev=46.4, avgBirths=296413.6
+fileName='easy_3',  avg=17446.3, dev=76.0, avgBirths=295635.9
+fileName='easy_4',  avg=21941.2, dev=21.6, avgBirths=294893.8
+fileName='medium_0',  avg=42739.6, dev=280.2, avgBirths=282420.0
+fileName='medium_1',  avg=83534.4, dev=1280.1, avgBirths=244059.1
+fileName='medium_2',  avg=122414.5, dev=1888.9, avgBirths=205496.9
+fileName='medium_3',  avg=158164.5, dev=4652.5, avgBirths=117674.0
+fileName='medium_4',  avg=199149.7, dev=7107.4, avgBirths=93437.6
+fileName='hard_0',  avg=252902.7, dev=5281.5, avgBirths=299091.1
+fileName='hard_1',  avg=391387.8, dev=22452.1, avgBirths=298192.8
+fileName='hard_2',  avg=523526.5, dev=27147.9, avgBirths=297661.5
+fileName='hard_3',  avg=643499.0, dev=37265.1, avgBirths=297351.7
+fileName='hard_4',  avg=787983.6, dev=51598.4, avgBirths=297180.0
+

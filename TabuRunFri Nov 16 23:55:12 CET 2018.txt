@@ -1,0 +1,17 @@
+TabuRun
+fileName='easy_0',  avg=4977.9, dev=15.6, avgBirths=1501.0
+fileName='easy_1',  avg=9540.6, dev=42.5, avgBirths=1501.0
+fileName='easy_2',  avg=13174.9, dev=96.8, avgBirths=1501.0
+fileName='easy_3',  avg=17309.9, dev=110.1, avgBirths=1501.0
+fileName='easy_4',  avg=21666.5, dev=110.5, avgBirths=1501.0
+fileName='medium_0',  avg=41921.0, dev=760.0, avgBirths=1501.0
+fileName='medium_1',  avg=79783.4, dev=1321.1, avgBirths=1501.0
+fileName='medium_2',  avg=118665.3, dev=3302.7, avgBirths=1501.0
+fileName='medium_3',  avg=158876.5, dev=3101.4, avgBirths=1501.0
+fileName='medium_4',  avg=199220.1, dev=5029.6, avgBirths=1501.0
+fileName='hard_0',  avg=233242.5, dev=4410.0, avgBirths=1501.0
+fileName='hard_1',  avg=374304.0, dev=12791.4, avgBirths=1501.0
+fileName='hard_2',  avg=471705.8, dev=29213.5, avgBirths=1501.0
+fileName='hard_3',  avg=608970.4, dev=52606.4, avgBirths=1501.0
+fileName='hard_4',  avg=710011.7, dev=37793.3, avgBirths=1501.0
+

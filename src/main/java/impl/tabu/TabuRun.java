@@ -28,10 +28,12 @@ public class TabuRun implements AlgorithmRun {
         TTPGenome currentBest = TTPGenome.randomInstance(problemDTO.dimension, ttpContext.getGreedyPickingPlan());
         TTPGenome overallBest = currentBest;
         this.tabu = new HashSet<>();
+        final Set<TTPGenome> births = new HashSet<>();
         tabu.add(currentBest);
 
         for (int i = 0; stopCondition(i, noProgressIterationsCounter); i++) {
             neighbours = neighbours(currentBest, NEIGHBOURS_COUNT);
+            births.addAll(neighbours);
             neighbours.removeAll(tabu);
             currentBest = best(neighbours);
             tabu.add(currentBest); //todo czy warto ograniczyć rozmiar i zrzucać najstarsze ?
@@ -41,11 +43,11 @@ public class TabuRun implements AlgorithmRun {
             } else {
                 noProgressIterationsCounter++;
             }
-//            logCurrentBest(currentBest);
+            logCurrentBest(currentBest);
         }
 
         logOverallBest(overallBest);
-        return new RunResult(overallBest.evaluate(problemDTO, ttpContext).intValue(), tabu.size());
+        return new RunResult(overallBest.evaluate(problemDTO, ttpContext).intValue(), births.size());
     }
 
     private boolean stopCondition(int i, int noProgressIterationsCounter) {

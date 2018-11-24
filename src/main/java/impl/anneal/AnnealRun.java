@@ -18,14 +18,21 @@ public class AnnealRun implements AlgorithmRun {
     private static final double COOLING_STEP = TEMPERATURE / ITERATIONS_COUNT;
     private final TTPContext ttpContext;
     private List<Integer> results;
+    private final TTPGenome initialGenome;
 
     public AnnealRun(String fileName) {
+        this(fileName, null);
+    }
+
+    public AnnealRun(String fileName, TTPGenome initialGenome) {
         this.problemDTO = ProblemReader.read(fileName);
+        this.initialGenome = initialGenome;
         ttpContext = new TTPContext(problemDTO);
     }
 
     public RunResult run() {
-        TTPGenome current = TTPGenome.randomInstance(problemDTO.dimension, ttpContext.getGreedyPickingPlan());
+        TTPGenome current = initialGenome != null ?
+                initialGenome : TTPGenome.randomInstance(problemDTO.dimension, ttpContext.getGreedyPickingPlan());
         TTPGenome overallBest = current;
         TTPGenome neighbour;
         final Set<TTPGenome> births = new HashSet<>();
@@ -45,12 +52,12 @@ public class AnnealRun implements AlgorithmRun {
             }
             temperature = lowerTemperature(temperature);
             results.add(current.evaluate(problemDTO, ttpContext).intValue());
-//            logCurrent(current);
+            logCurrent(current);
         }
 
         export(results);
         logOverallBest(overallBest);
-        return new RunResult(overallBest.evaluate(problemDTO, ttpContext).intValue(), births.size());
+        return new RunResult(overallBest.evaluate(problemDTO, ttpContext).intValue(), births.size(), overallBest);
     }
 
     private static void export(List<Integer> results) {

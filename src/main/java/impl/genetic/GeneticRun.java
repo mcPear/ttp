@@ -47,9 +47,9 @@ public class GeneticRun implements AlgorithmRun {
             System.out.println(generationResult.best + " " + generationResult.middle + " " + generationResult.worst);
         }
 //        System.out.println(overallResult.toCsvString());
-        System.out.println("The best profit: " + bestResult.best);
+//        System.out.println("The best profit: " + bestResult.best);
 //        System.out.println("The best tour: " + bestResult.bestGenome);
-        return new RunResult(bestResult.best, births.size());
+        return new RunResult(bestResult.best, births.size(), bestResult.bestGenome);
     }
 
     private List<TTPGenome> nextPopulation(List<TTPGenome> basePopulation) {

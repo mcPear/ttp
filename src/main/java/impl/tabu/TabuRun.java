@@ -16,16 +16,23 @@ public class TabuRun implements AlgorithmRun {
     private static final int NO_PROGRESS_ITERATIONS_COUNT = ITERATIONS_COUNT;
     private static final int NEIGHBOURS_COUNT = 300;
     private final TTPContext ttpContext;
+    private final TTPGenome initialGenome;
 
     public TabuRun(String fileName) {
+        this(fileName, null);
+    }
+
+    public TabuRun(String fileName, TTPGenome initialGenome) {
         this.problemDTO = ProblemReader.read(fileName);
+        this.initialGenome = initialGenome;
         ttpContext = new TTPContext(problemDTO);
     }
 
     public RunResult run() {
         Set<TTPGenome> neighbours;
         Integer noProgressIterationsCounter = 0;
-        TTPGenome currentBest = TTPGenome.randomInstance(problemDTO.dimension, ttpContext.getGreedyPickingPlan());
+        TTPGenome currentBest = initialGenome != null ?
+                initialGenome : TTPGenome.randomInstance(problemDTO.dimension, ttpContext.getGreedyPickingPlan());
         TTPGenome overallBest = currentBest;
         this.tabu = new HashSet<>();
         final Set<TTPGenome> births = new HashSet<>();
@@ -47,7 +54,7 @@ public class TabuRun implements AlgorithmRun {
         }
 
         logOverallBest(overallBest);
-        return new RunResult(overallBest.evaluate(problemDTO, ttpContext).intValue(), births.size());
+        return new RunResult(overallBest.evaluate(problemDTO, ttpContext).intValue(), births.size(), overallBest);
     }
 
     private boolean stopCondition(int i, int noProgressIterationsCounter) {

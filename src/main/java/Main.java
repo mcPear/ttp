@@ -1,5 +1,5 @@
 import api.AlgorithmRun;
-import impl.anneal.AnnealRun;
+import impl.hybrids.GAplusTS;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -16,7 +16,8 @@ public class Main {
                 "medium_4"
 //                , "hard_0", "hard_1", "hard_2", "hard_3", "hard_4"
         );
-        AlgorithmRun.RunResult runResult = new AnnealRun("medium_4").run();
+        AlgorithmRun.RunResult runResult = new GAplusTS("medium_4").run();
+//        AlgorithmRun.RunResult runResult = new AnnealRun("medium_4").run();
 //        AlgorithmRun.RunResult runResult = new TabuRun( "medium_4").run();
 //        AlgorithmRun.RunResult runResult = new GeneticRun( "medium_4").run();
 //        FilesExecutorResult filesExecutorResultA = FilesExecutor.execute(AnnealRun.class, fileNames);

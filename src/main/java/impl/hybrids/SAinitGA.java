@@ -32,7 +32,7 @@ public class SAinitGA implements AlgorithmRun {
         for (int i = 0; i < populationSize; i++) {
             TTPGenome random = TTPGenome.randomInstance(
                     problemDTO.dimension, ttpContext.getGreedyPickingPlan());
-            initialPopulation.add(new AnnealRun(fileName, random, 1_000).run().getGenome());
+            initialPopulation.add(new AnnealRun(fileName, random, 4_000).run().getGenome());
             System.out.println(i);
         }
         return initialPopulation;

@@ -32,7 +32,7 @@ public class TSinitGA implements AlgorithmRun {
         for (int i = 0; i < populationSize; i++) {
             TTPGenome random = TTPGenome.randomInstance(
                     problemDTO.dimension, ttpContext.getGreedyPickingPlan());
-            initialPopulation.add(new TabuRun(fileName, random, 60).run().getGenome());
+            initialPopulation.add(new TabuRun(fileName, random, 50).run().getGenome());
 
         }
         return initialPopulation;
